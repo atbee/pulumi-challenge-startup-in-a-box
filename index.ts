@@ -23,3 +23,12 @@ new checkly.Check("index-page", {
             .replace("{{websiteUrl}}", url)
     ),
 });
+
+import { Swag } from "./swag-provider";
+
+const swag = new Swag("athibet-prawane", {
+    name: "<YOUR_NAME>", // Fix it 🚨
+    email: "<YOUR_EMAIL>", // Fix it 🚨
+    address: "<YOUR_ADDRESS>", // Fix it 🚨
+    size: "<YOUR_SIZE>", // Fix it 🚨
+});
