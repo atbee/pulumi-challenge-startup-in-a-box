@@ -74,11 +74,10 @@ export class CdnWebsite extends pulumi.ComponentResource {
                     defaultTtl: 3600,
                     maxTtl: 86400,
                 },
-                priceClass: "PriceClass_200",
+                priceClass: "PriceClass_All",
                 restrictions: {
                     geoRestriction: {
-                        restrictionType: "whitelist",
-                        locations: ["US", "CA", "GB", "DE"],
+                        restrictionType: "none",
                     },
                 },
                 viewerCertificate: {
