@@ -29,3 +29,53 @@ fs.readdirSync(staticWebsiteDirectory).forEach((file) => {
         acl: aws.s3.PublicReadAcl,
     });
 });
+
+const s3OriginId = "myS3Origin";
+
+const cloudfrontDistribution = new aws.cloudfront.Distribution("s3Distribution", {
+    origins: [
+        {
+            domainName: bucket.bucketRegionalDomainName,
+            originId: s3OriginId,
+        },
+    ],
+    enabled: true,
+    isIpv6Enabled: true,
+    comment: "Some comment",
+    defaultRootObject: "index.html",
+    defaultCacheBehavior: {
+        allowedMethods: [
+            "DELETE",
+            "GET",
+            "HEAD",
+            "OPTIONS",
+            "PATCH",
+            "POST",
+            "PUT",
+        ],
+        cachedMethods: ["GET", "HEAD"],
+        targetOriginId: s3OriginId,
+        forwardedValues: {
+            queryString: false,
+            cookies: {
+                forward: "none",
+            },
+        },
+        viewerProtocolPolicy: "allow-all",
+        minTtl: 0,
+        defaultTtl: 3600,
+        maxTtl: 86400,
+    },
+    priceClass: "PriceClass_200",
+    restrictions: {
+        geoRestriction: {
+            restrictionType: "whitelist",
+            locations: ["US", "CA", "GB", "DE"],
+        },
+    },
+    viewerCertificate: {
+        cloudfrontDefaultCertificate: true,
+    },
+});
+
+export const url = cloudfrontDistribution.domainName
